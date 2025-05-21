@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'cart_page.dart';
+import 'package:flutter_shop/router.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -8,12 +7,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Shop',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
-      home: const CartPage(),
+      routerConfig: routerMain,
     );
   }
 }

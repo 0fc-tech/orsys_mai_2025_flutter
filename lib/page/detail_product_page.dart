@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DetailProductPage extends StatelessWidget {
-  const DetailProductPage({super.key});
+  final int productId;
+  const DetailProductPage({super.key, required this.productId});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,12 @@ class DetailProductPage extends StatelessWidget {
                   Image.network(
                     "https://www.presse-citron.net/app/uploads/2024/09/iPhone-16-Pro-couleurs.jpg",
                     width: double.infinity,
+                    errorBuilder:
+                        (context, error, stackTrace) => SizedBox(
+                          width: double.infinity,
+                          height: 240,
+                          child: Icon(Icons.broken_image),
+                        ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
