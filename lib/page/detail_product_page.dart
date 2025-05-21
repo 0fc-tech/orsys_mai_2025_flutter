@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop/repository/product_repository.dart';
 
-class DetailProductPage extends StatelessWidget {
+import '../model/product.dart';
+
+class DetailProductPage extends StatefulWidget {
   final int productId;
   const DetailProductPage({super.key, required this.productId});
+
+  @override
+  State<DetailProductPage> createState() => _DetailProductPageState();
+}
+
+class _DetailProductPageState extends State<DetailProductPage> {
+  Product? product;
+
+  @override
+  void initState() {
+    super.initState();
+    ProductRepository.getProductById(widget.productId).then((product) {
+      setState(() {
+        this.product = product;
+      });
+    }); //
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Détail de iPhone 16 Pro Max'),
+        title: Text('Détail de ${product?.title ?? "..."}'),
       ),
       body: SafeArea(
         child: Stack(
@@ -20,8 +40,9 @@ class DetailProductPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image.network(
-                    "https://www.presse-citron.net/app/uploads/2024/09/iPhone-16-Pro-couleurs.jpg",
+                    product?.image ?? "",
                     width: double.infinity,
+                    height: 280,
                     errorBuilder:
                         (context, error, stackTrace) => SizedBox(
                           width: double.infinity,
@@ -31,15 +52,29 @@ class DetailProductPage extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(
-                      "iPhone 16 Pro Max",
-                      style: Theme.of(context).textTheme.headlineMedium,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            product?.title ?? "...",
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Text(
+                          "${product?.displayPrice() ?? "..."}€",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
-                      "lorem i lorem ipsu lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem",
+                      product?.description ??
+                          "Description du produit en cours de chargement...",
                       maxLines: 8,
                     ),
                   ),

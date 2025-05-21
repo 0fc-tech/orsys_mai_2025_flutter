@@ -15,4 +15,18 @@ class ProductRepository {
     return Future.error("Erreur lors de la récupération");
     //Désérialiser en liste de produits Dart
   }
+
+  static Future<Product> getProductById(int id) async {
+    //Requête à l'API pour récupérer les produits
+    final response = await get(
+      Uri.parse('https://fakestoreapi.com/products/$id'),
+    );
+    if (response.statusCode == 200 && response.body.isNotEmpty) {
+      //Récupérer une liste de produits JSON
+      final productJson = jsonDecode(response.body) as Map;
+      return Product.fromMap(productJson as Map<String, dynamic>);
+    }
+    return Future.error("Erreur lors de la récupération");
+    //Désérialiser en liste de produits Dart
+  }
 }

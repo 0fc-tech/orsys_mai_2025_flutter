@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../model/cart.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -10,7 +13,22 @@ class CartPage extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text('Panier'),
       ),
-      body: Stack(children: [LineTotalPrice(124), Center(child: EmptyCart())]),
+      body: Consumer<Cart>(
+        builder: (context, cart, child) {
+          if (cart.lsProducts.isEmpty) {
+            return Stack(
+              children: [LineTotalPrice(0), Center(child: EmptyCart())],
+            );
+          } else {
+            return ListView.builder(
+              itemCount: cart.lsProducts.length,
+              itemBuilder:
+                  (context, index) =>
+                      ListTile(title: Text(cart.lsProducts[index].title)),
+            );
+          }
+        },
+      ),
     );
   }
 }
