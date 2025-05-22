@@ -57,7 +57,10 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               context.go('/cart');
             },
-            icon: Icon(Icons.shopping_cart),
+            icon: Badge(
+              label: Text("${context.watch<Cart>().lsProducts.length}"),
+              child: Icon(Icons.shopping_cart),
+            ),
           ),
         ],
       ),
