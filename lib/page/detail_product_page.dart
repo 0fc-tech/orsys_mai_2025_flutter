@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shop/repository/product_repository.dart';
+import 'package:provider/provider.dart';
 
+import '../model/cart.dart';
 import '../model/product.dart';
 
 class DetailProductPage extends StatefulWidget {
@@ -13,7 +15,6 @@ class DetailProductPage extends StatefulWidget {
 
 class _DetailProductPageState extends State<DetailProductPage> {
   Product? product;
-
   @override
   void initState() {
     super.initState();
@@ -88,7 +89,12 @@ class _DetailProductPageState extends State<DetailProductPage> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: FilledButton(
-                    onPressed: () {},
+                    onPressed:
+                        product == null
+                            ? null
+                            : () {
+                              context.read<Cart>().addProduct(product!);
+                            },
                     child: Text("Ajouter au panier"),
                   ),
                 ),

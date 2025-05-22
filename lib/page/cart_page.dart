@@ -23,8 +23,15 @@ class CartPage extends StatelessWidget {
             return ListView.builder(
               itemCount: cart.lsProducts.length,
               itemBuilder:
-                  (context, index) =>
-                      ListTile(title: Text(cart.lsProducts[index].title)),
+                  (context, index) => ListTile(
+                    title: Text(cart.lsProducts[index].title),
+                    trailing: IconButton(
+                      onPressed: () {
+                        cart.removeProduct(cart.lsProducts[index]);
+                      },
+                      icon: Icon(Icons.remove),
+                    ),
+                  ),
             );
           }
         },
