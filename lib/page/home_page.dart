@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -6,48 +7,11 @@ import '../model/cart.dart';
 import '../model/product.dart';
 import '../repository/product_repository.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
-  final List<Product> lsProducts = [
-    Product(
-      id: 1,
-      title: 'Red Shirt',
-      description: 'A red shirt - it is pretty red!',
-      price: 29.99,
-      image:
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-      category: 'Shirts',
-    ),
-    Product(
-      id: 2,
-      title: 'Trousers',
-      description: 'A nice pair of trousers.',
-      price: 59.99,
-      image:
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-      category: 'Trousers',
-    ),
-    Product(
-      id: 3,
-      title: 'Yellow Scarf',
-      description: 'Warm and cozy - exactly what you need for the winter.',
-      price: 19.99,
-      category: 'Scarves',
-      image:
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-    ),
-    Product(
-      id: 4,
-      title: 'A Pan',
-      description: 'Prepare any meal you want.',
-      price: 49,
-      category: 'Pan',
-      image:
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-    ),
-  ];
+class HomePage extends ConsumerWidget {
+  const HomePage({super.key});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -58,7 +22,7 @@ class HomePage extends StatelessWidget {
               context.go('/cart');
             },
             icon: Badge(
-              label: Text("${context.watch<Cart>().lsProducts.length}"),
+              label: Text("${ref.watch(cartProvider).length}"),
               child: Icon(Icons.shopping_cart),
             ),
           ),

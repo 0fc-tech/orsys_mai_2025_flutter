@@ -1,26 +1,25 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_shop/model/product.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class Cart extends ChangeNotifier {
-  final List<Product> _lsProducts = [];
+part 'cart.g.dart';
 
-  List<Product> get lsProducts => _lsProducts;
+@riverpod
+class Cart extends _$Cart {
+  @override
+  List<Product> build() => [];
 
   void addProduct(Product product) {
-    _lsProducts.add(product);
-    notifyListeners();
+    state = [product, ...state];
   }
 
   void removeProduct(Product product) {
-    _lsProducts.remove(product);
-    notifyListeners();
+    state = state.where((element) => element.id != product.id).toList();
   }
 
   void removeAllProducts() {
-    _lsProducts.clear();
-    notifyListeners();
+    state = [];
   }
 
   String getPriceTotalEur() =>
-      "${_lsProducts.fold(0.0, (previousValue, element) => previousValue + element.price).toStringAsFixed(2)}€";
+      "${state.fold(0.0, (prev, value) => prev + value.price).toStringAsFixed(2)}€";
 }

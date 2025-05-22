@@ -44,12 +44,11 @@ class _DetailProductPageState extends State<DetailProductPage> {
                     product?.image ?? "",
                     width: double.infinity,
                     height: 280,
-                    errorBuilder:
-                        (context, error, stackTrace) => SizedBox(
-                          width: double.infinity,
-                          height: 240,
-                          child: Icon(Icons.broken_image),
-                        ),
+                    errorBuilder: (context, error, stackTrace) => SizedBox(
+                      width: double.infinity,
+                      height: 240,
+                      child: Icon(Icons.broken_image),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -79,6 +78,7 @@ class _DetailProductPageState extends State<DetailProductPage> {
                       maxLines: 8,
                     ),
                   ),
+                  //Expanded(child: WebView(initialUrl: product?.link ?? "")),
                 ],
               ),
             ),
@@ -89,12 +89,11 @@ class _DetailProductPageState extends State<DetailProductPage> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: FilledButton(
-                    onPressed:
-                        product == null
-                            ? null
-                            : () {
-                              context.read<Cart>().addProduct(product!);
-                            },
+                    onPressed: product == null
+                        ? null
+                        : () {
+                            context.read<Cart>().addProduct(product!);
+                          },
                     child: Text("Ajouter au panier"),
                   ),
                 ),

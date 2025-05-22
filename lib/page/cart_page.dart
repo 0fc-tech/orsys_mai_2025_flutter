@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../model/cart.dart';
 
@@ -13,25 +13,36 @@ class CartPage extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text('Panier'),
       ),
-      body: Consumer<Cart>(
-        builder: (context, cart, child) {
-          if (cart.lsProducts.isEmpty) {
+      body: Consumer(
+        builder: (context, ref, child) {
+          final cart = ref.watch(cartProvider);
+          final cartNotifier = ref.watch(cartProvider.notifier);
+          if (cart.isEmpty) {
             return Stack(
-              children: [LineTotalPrice(0), Center(child: EmptyCart())],
+              children: [
+                LineTotalPrice("0€"),
+                Center(child: EmptyCart()),
+              ],
             );
           } else {
-            return ListView.builder(
-              itemCount: cart.lsProducts.length,
-              itemBuilder:
-                  (context, index) => ListTile(
-                    title: Text(cart.lsProducts[index].title),
-                    trailing: IconButton(
-                      onPressed: () {
-                        cart.removeProduct(cart.lsProducts[index]);
-                      },
-                      icon: Icon(Icons.remove),
+            return Column(
+              children: [
+                LineTotalPrice(cartNotifier.getPriceTotalEur()),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: cart.length,
+                    itemBuilder: (context, index) => ListTile(
+                      title: Text(cart[index].title),
+                      trailing: IconButton(
+                        onPressed: () {
+                          cartNotifier.removeProduct(cart[index]);
+                        },
+                        icon: Icon(Icons.remove),
+                      ),
                     ),
                   ),
+                ),
+              ],
             );
           }
         },
@@ -42,7 +53,7 @@ class CartPage extends StatelessWidget {
 
 class LineTotalPrice extends StatelessWidget {
   const LineTotalPrice(this.totalPrice, {super.key});
-  final int totalPrice;
+  final String totalPrice;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -51,7 +62,7 @@ class LineTotalPrice extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('Votre panier total est de:'),
-          Text('$totalPrice€', style: Theme.of(context).textTheme.titleMedium),
+          Text('$totalPrice', style: Theme.of(context).textTheme.titleMedium),
         ],
       ),
     );
