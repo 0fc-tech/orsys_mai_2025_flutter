@@ -92,6 +92,7 @@ class _DetailProductPageState extends State<DetailProductPage> {
                     onPressed: product == null
                         ? null
                         : () {
+                            //TODO Transformer l'appel d'ajout produit riverpod
                             context.read<Cart>().addProduct(product!);
                           },
                     child: Text("Ajouter au panier"),

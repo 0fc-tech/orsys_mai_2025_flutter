@@ -42,6 +42,7 @@ class HomePage extends ConsumerWidget {
   }
 }
 
+//TODO Transformer StatelessWidget en ConsumerWidget
 class ListViewProducts extends StatelessWidget {
   const ListViewProducts({super.key, required this.lsProducts});
 
@@ -66,6 +67,7 @@ class ListViewProducts extends StatelessWidget {
           leading: Image.network(product.image, width: 50),
           trailing: TextButton(
             onPressed: () {
+              //TODO Transformer l'appel d'ajout produit en Riverpod
               context.read<Cart>().addProduct(product);
             },
             child: Text("Ajouter"),
